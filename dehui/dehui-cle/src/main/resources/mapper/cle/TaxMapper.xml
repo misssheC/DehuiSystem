@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dehui.cle.mapper.TaxMapper">
+    
+    <resultMap type="Tax" id="TaxResult">
+        <result property="id"    column="id"    />
+        <result property="hsCode"    column="hs_code"    />
+        <result property="antiDumping"    column="anti_dumping"    />
+        <result property="cpsc"    column="cpsc"    />
+        <result property="needCert"    column="need_cert"    />
+        <result property="totalTaxRate"    column="total_tax_rate"    />
+        <result property="cnDesc"    column="cn_desc"    />
+        <result property="officialDesc"    column="official_desc"    />
+        <result property="baseTaxRate"    column="base_tax_rate"    />
+        <result property="section301Code"    column="section301_code"    />
+        <result property="section301Tax"    column="section301_tax"    />
+        <result property="fl301232Code"    column="fl301_232_code"    />
+        <result property="fl301232Tax"    column="fl301_232_tax"    />
+        <result property="unit1"    column="unit1"    />
+        <result property="unit2"    column="unit2"    />
+        <result property="centsPerKg"    column="cents_per_kg"    />
+        <result property="effectiveDate"    column="effective_date"    />
+        <result property="expirationDate"    column="expiration_date"    />
+        <result property="pga1"    column="pga1"    />
+        <result property="pga2"    column="pga2"    />
+        <result property="pga3"    column="pga3"    />
+        <result property="pga4"    column="pga4"    />
+        <result property="pga5"    column="pga5"    />
+        <result property="pga6"    column="pga6"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTaxVo">
+        select id, hs_code, anti_dumping, cpsc, need_cert, total_tax_rate, cn_desc, official_desc, base_tax_rate, section301_code, section301_tax, fl301_232_code, fl301_232_tax, unit1, unit2, cents_per_kg, effective_date, expiration_date, pga1, pga2, pga3, pga4, pga5, pga6, create_time from biz_tax
+    </sql>
+
+    <select id="selectTaxList" parameterType="Tax" resultMap="TaxResult">
+        <include refid="selectTaxVo"/>
+        <where>  
+            <if test="hsCode != null  and hsCode != ''"> and hs_code = #{hsCode}</if>
+            <if test="cnDesc != null  and cnDesc != ''"> and cn_desc like concat('%', #{cnDesc}, '%')</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTaxById" parameterType="Long" resultMap="TaxResult">
+        <include refid="selectTaxVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTax" parameterType="Tax" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_tax
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hsCode != null">hs_code,</if>
+            <if test="antiDumping != null">anti_dumping,</if>
+            <if test="cpsc != null">cpsc,</if>
+            <if test="needCert != null">need_cert,</if>
+            <if test="totalTaxRate != null">total_tax_rate,</if>
+            <if test="cnDesc != null">cn_desc,</if>
+            <if test="officialDesc != null">official_desc,</if>
+            <if test="baseTaxRate != null">base_tax_rate,</if>
+            <if test="section301Code != null">section301_code,</if>
+            <if test="section301Tax != null">section301_tax,</if>
+            <if test="fl301232Code != null">fl301_232_code,</if>
+            <if test="fl301232Tax != null">fl301_232_tax,</if>
+            <if test="unit1 != null">unit1,</if>
+            <if test="unit2 != null">unit2,</if>
+            <if test="centsPerKg != null">cents_per_kg,</if>
+            <if test="effectiveDate != null">effective_date,</if>
+            <if test="expirationDate != null">expiration_date,</if>
+            <if test="pga1 != null">pga1,</if>
+            <if test="pga2 != null">pga2,</if>
+            <if test="pga3 != null">pga3,</if>
+            <if test="pga4 != null">pga4,</if>
+            <if test="pga5 != null">pga5,</if>
+            <if test="pga6 != null">pga6,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hsCode != null">#{hsCode},</if>
+            <if test="antiDumping != null">#{antiDumping},</if>
+            <if test="cpsc != null">#{cpsc},</if>
+            <if test="needCert != null">#{needCert},</if>
+            <if test="totalTaxRate != null">#{totalTaxRate},</if>
+            <if test="cnDesc != null">#{cnDesc},</if>
+            <if test="officialDesc != null">#{officialDesc},</if>
+            <if test="baseTaxRate != null">#{baseTaxRate},</if>
+            <if test="section301Code != null">#{section301Code},</if>
+            <if test="section301Tax != null">#{section301Tax},</if>
+            <if test="fl301232Code != null">#{fl301232Code},</if>
+            <if test="fl301232Tax != null">#{fl301232Tax},</if>
+            <if test="unit1 != null">#{unit1},</if>
+            <if test="unit2 != null">#{unit2},</if>
+            <if test="centsPerKg != null">#{centsPerKg},</if>
+            <if test="effectiveDate != null">#{effectiveDate},</if>
+            <if test="expirationDate != null">#{expirationDate},</if>
+            <if test="pga1 != null">#{pga1},</if>
+            <if test="pga2 != null">#{pga2},</if>
+            <if test="pga3 != null">#{pga3},</if>
+            <if test="pga4 != null">#{pga4},</if>
+            <if test="pga5 != null">#{pga5},</if>
+            <if test="pga6 != null">#{pga6},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTax" parameterType="Tax">
+        update biz_tax
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hsCode != null">hs_code = #{hsCode},</if>
+            <if test="antiDumping != null">anti_dumping = #{antiDumping},</if>
+            <if test="cpsc != null">cpsc = #{cpsc},</if>
+            <if test="needCert != null">need_cert = #{needCert},</if>
+            <if test="totalTaxRate != null">total_tax_rate = #{totalTaxRate},</if>
+            <if test="cnDesc != null">cn_desc = #{cnDesc},</if>
+            <if test="officialDesc != null">official_desc = #{officialDesc},</if>
+            <if test="baseTaxRate != null">base_tax_rate = #{baseTaxRate},</if>
+            <if test="section301Code != null">section301_code = #{section301Code},</if>
+            <if test="section301Tax != null">section301_tax = #{section301Tax},</if>
+            <if test="fl301232Code != null">fl301_232_code = #{fl301232Code},</if>
+            <if test="fl301232Tax != null">fl301_232_tax = #{fl301232Tax},</if>
+            <if test="unit1 != null">unit1 = #{unit1},</if>
+            <if test="unit2 != null">unit2 = #{unit2},</if>
+            <if test="centsPerKg != null">cents_per_kg = #{centsPerKg},</if>
+            <if test="effectiveDate != null">effective_date = #{effectiveDate},</if>
+            <if test="expirationDate != null">expiration_date = #{expirationDate},</if>
+            <if test="pga1 != null">pga1 = #{pga1},</if>
+            <if test="pga2 != null">pga2 = #{pga2},</if>
+            <if test="pga3 != null">pga3 = #{pga3},</if>
+            <if test="pga4 != null">pga4 = #{pga4},</if>
+            <if test="pga5 != null">pga5 = #{pga5},</if>
+            <if test="pga6 != null">pga6 = #{pga6},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTaxById" parameterType="Long">
+        delete from biz_tax where id = #{id}
+    </delete>
+
+    <delete id="deleteTaxByIds" parameterType="String">
+        delete from biz_tax where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

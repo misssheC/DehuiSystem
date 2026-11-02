@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dehui.cle.mapper.CustomerMapper">
+    
+    <resultMap type="Customer" id="CustomerResult">
+        <result property="id"    column="id"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="salesmanId"    column="salesman_id"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="isSignContract"    column="is_sign_contract"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="customerPassword"    column="customer_password"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="contractFileIds"    column="contract_file_ids"    />
+        <result property="accountFileIds"    column="account_file_ids"    />
+        <result property="bondId"    column="bond_id"    />
+        <result property="bondNo"    column="bond_no"    />
+        <result property="bondStatus"    column="bond_status"    />
+        <result property="createDept"    column="create_dept"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectCustomerVo">
+        select id, customer_name, salesman_id, phone, email, status, is_sign_contract, remark, create_time, customer_password, role_id, contract_file_ids, account_file_ids, bond_id, bond_no, bond_status, create_dept, create_by, update_by, update_time, del_flag from biz_customer
+    </sql>
+
+    <select id="selectCustomerList" parameterType="Customer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        <where>  
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="salesmanId != null "> and salesman_id = #{salesmanId}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectCustomerById" parameterType="Long" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerName != null and customerName != ''">customer_name,</if>
+            <if test="salesmanId != null">salesman_id,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="status != null">status,</if>
+            <if test="isSignContract != null">is_sign_contract,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="customerPassword != null and customerPassword != ''">customer_password,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="contractFileIds != null">contract_file_ids,</if>
+            <if test="accountFileIds != null">account_file_ids,</if>
+            <if test="bondId != null">bond_id,</if>
+            <if test="bondNo != null">bond_no,</if>
+            <if test="bondStatus != null">bond_status,</if>
+            <if test="createDept != null">create_dept,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerName != null and customerName != ''">#{customerName},</if>
+            <if test="salesmanId != null">#{salesmanId},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isSignContract != null">#{isSignContract},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="customerPassword != null and customerPassword != ''">#{customerPassword},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="contractFileIds != null">#{contractFileIds},</if>
+            <if test="accountFileIds != null">#{accountFileIds},</if>
+            <if test="bondId != null">#{bondId},</if>
+            <if test="bondNo != null">#{bondNo},</if>
+            <if test="bondStatus != null">#{bondStatus},</if>
+            <if test="createDept != null">#{createDept},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCustomer" parameterType="Customer">
+        update biz_customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerName != null and customerName != ''">customer_name = #{customerName},</if>
+            <if test="salesmanId != null">salesman_id = #{salesmanId},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isSignContract != null">is_sign_contract = #{isSignContract},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="customerPassword != null and customerPassword != ''">customer_password = #{customerPassword},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="contractFileIds != null">contract_file_ids = #{contractFileIds},</if>
+            <if test="accountFileIds != null">account_file_ids = #{accountFileIds},</if>
+            <if test="bondId != null">bond_id = #{bondId},</if>
+            <if test="bondNo != null">bond_no = #{bondNo},</if>
+            <if test="bondStatus != null">bond_status = #{bondStatus},</if>
+            <if test="createDept != null">create_dept = #{createDept},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCustomerById" parameterType="Long">
+        delete from biz_customer where id = #{id}
+    </delete>
+
+    <delete id="deleteCustomerByIds" parameterType="String">
+        delete from biz_customer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

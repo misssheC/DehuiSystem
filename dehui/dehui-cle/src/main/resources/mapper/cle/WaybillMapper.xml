@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dehui.cle.mapper.WaybillMapper">
+
+    <select id="selectMyWaybillList" parameterType="Waybill" resultMap="WaybillResult">
+        SELECT
+        w.id,
+        w.bill_no,
+        w.container_no,
+        w.customer,
+        w.carrier,
+        w.container_type,
+        w.package_qty,
+        w.etd,
+        w.eta,
+        w.customs_status,
+        w.route,
+        w.pol,
+        w.pod,
+        w.create_time
+        FROM biz_waybill w
+        <where>
+            w.del_flag = '0'
+            <!-- 核心过滤：只查当前用户的数据 -->
+            AND w.user_id = #{userId}
+            <if test="billNo != null and billNo != ''">
+                AND w.bill_no LIKE CONCAT('%', #{billNo}, '%')
+            </if>
+            <if test="containerNo != null and containerNo != ''">
+                AND w.container_no LIKE CONCAT('%', #{containerNo}, '%')
+            </if>
+            <if test="customer != null and customer != ''">
+                AND w.customer LIKE CONCAT('%', #{customer}, '%')
+            </if>
+            <if test="customsStatus != null and customsStatus != ''">
+                AND w.customs_status = #{customsStatus}
+            </if>
+        </where>
+        ORDER BY w.create_time DESC
+    </select>
+    
+    <resultMap type="Waybill" id="WaybillResult">
+        <result property="id"    column="id"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="containerNo"    column="container_no"    />
+        <result property="containerStatus"    column="container_status"    />
+        <result property="customer"    column="customer"    />
+        <result property="carrier"    column="carrier"    />
+        <result property="containerType"    column="container_type"    />
+        <result property="packageQty"    column="package_qty"    />
+        <result property="weight"    column="weight"    />
+        <result property="volume"    column="volume"    />
+        <result property="cutoffDate"    column="cutoff_date"    />
+        <result property="etd"    column="etd"    />
+        <result property="transitDate"    column="transit_date"    />
+        <result property="eta"    column="eta"    />
+        <result property="customsStatus"    column="customs_status"    />
+        <result property="isSendEmail"    column="is_send_email"    />
+        <result property="customsDate"    column="customs_date"    />
+        <result property="customerRemark"    column="customer_remark"    />
+        <result property="route"    column="route"    />
+        <result property="pol"    column="pol"    />
+        <result property="transPort"    column="trans_port"    />
+        <result property="pod"    column="pod"    />
+        <result property="vesselVoyage"    column="vessel_voyage"    />
+        <result property="transitTime"    column="transit_time"    />
+        <result property="doDate"    column="do_date"    />
+        <result property="releaseTime"    column="release_time"    />
+        <result property="transportType"    column="transport_type"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="businessType"    column="business_type"    />
+        <result property="inputType"    column="input_type"    />
+        <result property="importer"    column="importer"    />
+        <result property="Status7501"    column="7501_status"    />
+        <result property="isf"    column="isf"    />
+        <result property="isMyisf"    column="is_myisf"    />
+        <result property="checkCode"    column="check_code"    />
+        <result property="checkProgress"    column="check_progress"    />
+        <result property="controlMode"    column="control_mode"    />
+        <result property="salesman"    column="salesman"    />
+        <result property="operator"    column="operator"    />
+        <result property="supplier"    column="supplier"    />
+        <result property="operateUser"    column="operate_user"    />
+        <result property="innerRemark"    column="inner_remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="userId" column="user_id" />
+    </resultMap>
+
+    <sql id="selectWaybillVo">
+        select w.id, w.bill_no, w.container_no, w.container_status, w.customer, w.carrier,
+               w.container_type, w.package_qty, w.weight, w.volume, w.cutoff_date, w.etd,
+               w.transit_date, w.eta, w.customs_status, w.is_send_email, w.customs_date,
+               w.customer_remark, w.route, w.pol, w.trans_port, w.pod, w.vessel_voyage,
+               w.transit_time, w.do_date, w.release_time, w.transport_type, w.price_type,
+               w.business_type, w.input_type, w.importer, w.7501_status, w.isf, w.is_myisf,
+               w.check_code, w.check_progress, w.control_mode, w.salesman, w.operator,
+               w.supplier, w.operate_user, w.inner_remark, w.create_by, w.create_time,
+               w.update_by, w.update_time, w.remark, w.del_flag, w.user_id
+        from biz_waybill w
+    </sql>
+
+    <select id="selectWaybillList" parameterType="Waybill" resultMap="WaybillResult">
+        <include refid="selectWaybillVo"/>
+        <where>
+            <if test="billNo != null  and billNo != ''"> and w.bill_no = #{billNo}</if>
+            <if test="containerNo != null  and containerNo != ''"> and w.container_no = #{containerNo}</if>
+            <if test="containerStatus != null  and containerStatus != ''"> and w.container_status = #{containerStatus}</if>
+            <if test="customer != null  and customer != ''"> and w.customer = #{customer}</if>
+            <if test="cutoffDate != null "> and w.cutoff_date = #{cutoffDate}</if>
+            <if test="params.beginEtd != null and params.beginEtd != '' and params.endEtd != null and params.endEtd != ''"> and w.etd between #{params.beginEtd} and #{params.endEtd}</if>
+            <if test="params.beginEta != null and params.beginEta != '' and params.endEta != null and params.endEta != ''"> and w.eta between #{params.beginEta} and #{params.endEta}</if>
+            <if test="doDate != null "> and w.do_date = #{doDate}</if>
+            <if test="priceType != null  and priceType != ''"> and w.price_type = #{priceType}</if>
+            <if test="businessType != null  and businessType != ''"> and w.business_type = #{businessType}</if>
+            <if test="inputType != null  and inputType != ''"> and w.input_type = #{inputType}</if>
+            <if test="isf != null "> and w.isf = #{isf}</if>
+            <!-- 数据权限过滤，必须用 ${} 不能用 #{} -->
+            ${params.dataScope}
+        </where>
+    </select>
+    
+    <select id="selectWaybillById" parameterType="Long" resultMap="WaybillResult">
+        <include refid="selectWaybillVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWaybill" parameterType="Waybill" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_waybill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billNo != null">bill_no,</if>
+            <if test="containerNo != null">container_no,</if>
+            <if test="containerStatus != null">container_status,</if>
+            <if test="customer != null">customer,</if>
+            <if test="carrier != null">carrier,</if>
+            <if test="containerType != null">container_type,</if>
+            <if test="packageQty != null">package_qty,</if>
+            <if test="weight != null">weight,</if>
+            <if test="volume != null">volume,</if>
+            <if test="cutoffDate != null">cutoff_date,</if>
+            <if test="etd != null">etd,</if>
+            <if test="transitDate != null">transit_date,</if>
+            <if test="eta != null">eta,</if>
+            <if test="customsStatus != null">customs_status,</if>
+            <if test="isSendEmail != null">is_send_email,</if>
+            <if test="customsDate != null">customs_date,</if>
+            <if test="customerRemark != null">customer_remark,</if>
+            <if test="route != null">route,</if>
+            <if test="pol != null">pol,</if>
+            <if test="transPort != null">trans_port,</if>
+            <if test="pod != null">pod,</if>
+            <if test="vesselVoyage != null">vessel_voyage,</if>
+            <if test="transitTime != null">transit_time,</if>
+            <if test="doDate != null">do_date,</if>
+            <if test="releaseTime != null">release_time,</if>
+            <if test="transportType != null">transport_type,</if>
+            <if test="priceType != null">price_type,</if>
+            <if test="businessType != null">business_type,</if>
+            <if test="inputType != null">input_type,</if>
+            <if test="importer != null">importer,</if>
+            <if test="Status7501 != null">7501_status,</if>
+            <if test="isf != null">isf,</if>
+            <if test="isMyisf != null">is_myisf,</if>
+            <if test="checkCode != null">check_code,</if>
+            <if test="checkProgress != null">check_progress,</if>
+            <if test="controlMode != null">control_mode,</if>
+            <if test="salesman != null">salesman,</if>
+            <if test="operator != null">operator,</if>
+            <if test="supplier != null">supplier,</if>
+            <if test="operateUser != null">operate_user,</if>
+            <if test="innerRemark != null">inner_remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="userId != null">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billNo != null">#{billNo},</if>
+            <if test="containerNo != null">#{containerNo},</if>
+            <if test="containerStatus != null">#{containerStatus},</if>
+            <if test="customer != null">#{customer},</if>
+            <if test="carrier != null">#{carrier},</if>
+            <if test="containerType != null">#{containerType},</if>
+            <if test="packageQty != null">#{packageQty},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="cutoffDate != null">#{cutoffDate},</if>
+            <if test="etd != null">#{etd},</if>
+            <if test="transitDate != null">#{transitDate},</if>
+            <if test="eta != null">#{eta},</if>
+            <if test="customsStatus != null">#{customsStatus},</if>
+            <if test="isSendEmail != null">#{isSendEmail},</if>
+            <if test="customsDate != null">#{customsDate},</if>
+            <if test="customerRemark != null">#{customerRemark},</if>
+            <if test="route != null">#{route},</if>
+            <if test="pol != null">#{pol},</if>
+            <if test="transPort != null">#{transPort},</if>
+            <if test="pod != null">#{pod},</if>
+            <if test="vesselVoyage != null">#{vesselVoyage},</if>
+            <if test="transitTime != null">#{transitTime},</if>
+            <if test="doDate != null">#{doDate},</if>
+            <if test="releaseTime != null">#{releaseTime},</if>
+            <if test="transportType != null">#{transportType},</if>
+            <if test="priceType != null">#{priceType},</if>
+            <if test="businessType != null">#{businessType},</if>
+            <if test="inputType != null">#{inputType},</if>
+            <if test="importer != null">#{importer},</if>
+            <if test="Status7501 != null">#{Status7501},</if>
+            <if test="isf != null">#{isf},</if>
+            <if test="isMyisf != null">#{isMyisf},</if>
+            <if test="checkCode != null">#{checkCode},</if>
+            <if test="checkProgress != null">#{checkProgress},</if>
+            <if test="controlMode != null">#{controlMode},</if>
+            <if test="salesman != null">#{salesman},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="supplier != null">#{supplier},</if>
+            <if test="operateUser != null">#{operateUser},</if>
+            <if test="innerRemark != null">#{innerRemark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWaybill" parameterType="Waybill">
+        update biz_waybill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="containerNo != null">container_no = #{containerNo},</if>
+            <if test="containerStatus != null">container_status = #{containerStatus},</if>
+            <if test="customer != null">customer = #{customer},</if>
+            <if test="carrier != null">carrier = #{carrier},</if>
+            <if test="containerType != null">container_type = #{containerType},</if>
+            <if test="packageQty != null">package_qty = #{packageQty},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="cutoffDate != null">cutoff_date = #{cutoffDate},</if>
+            <if test="etd != null">etd = #{etd},</if>
+            <if test="transitDate != null">transit_date = #{transitDate},</if>
+            <if test="eta != null">eta = #{eta},</if>
+            <if test="customsStatus != null">customs_status = #{customsStatus},</if>
+            <if test="isSendEmail != null">is_send_email = #{isSendEmail},</if>
+            <if test="customsDate != null">customs_date = #{customsDate},</if>
+            <if test="customerRemark != null">customer_remark = #{customerRemark},</if>
+            <if test="route != null">route = #{route},</if>
+            <if test="pol != null">pol = #{pol},</if>
+            <if test="transPort != null">trans_port = #{transPort},</if>
+            <if test="pod != null">pod = #{pod},</if>
+            <if test="vesselVoyage != null">vessel_voyage = #{vesselVoyage},</if>
+            <if test="transitTime != null">transit_time = #{transitTime},</if>
+            <if test="doDate != null">do_date = #{doDate},</if>
+            <if test="releaseTime != null">release_time = #{releaseTime},</if>
+            <if test="transportType != null">transport_type = #{transportType},</if>
+            <if test="priceType != null">price_type = #{priceType},</if>
+            <if test="businessType != null">business_type = #{businessType},</if>
+            <if test="inputType != null">input_type = #{inputType},</if>
+            <if test="importer != null">importer = #{importer},</if>
+            <if test="Status7501 != null">7501_status = #{Status7501},</if>
+            <if test="isf != null">isf = #{isf},</if>
+            <if test="isMyisf != null">is_myisf = #{isMyisf},</if>
+            <if test="checkCode != null">check_code = #{checkCode},</if>
+            <if test="checkProgress != null">check_progress = #{checkProgress},</if>
+            <if test="controlMode != null">control_mode = #{controlMode},</if>
+            <if test="salesman != null">salesman = #{salesman},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="supplier != null">supplier = #{supplier},</if>
+            <if test="operateUser != null">operate_user = #{operateUser},</if>
+            <if test="innerRemark != null">inner_remark = #{innerRemark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWaybillById" parameterType="Long">
+        delete from biz_waybill where id = #{id}
+    </delete>
+
+    <delete id="deleteWaybillByIds" parameterType="String">
+        delete from biz_waybill where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dehui.cle.mapper.hsMapper">
+    
+    <resultMap type="hs" id="hsResult">
+        <result property="id"    column="id"    />
+        <result property="cnName"    column="cn_name"    />
+        <result property="enName"    column="en_name"    />
+        <result property="commonCode"    column="common_code"    />
+        <result property="hsCode"    column="hs_code"    />
+        <result property="antiDumping"    column="anti_dumping"    />
+        <result property="cpsc"    column="cpsc"    />
+        <result property="needCert"    column="need_cert"    />
+        <result property="articleDescription"    column="article_description"    />
+        <result property="totalTaxRate"    column="total_tax_rate"    />
+        <result property="baseTaxRate"    column="base_tax_rate"    />
+        <result property="section301Code"    column="section301_code"    />
+        <result property="section301Tax"    column="section301_tax"    />
+        <result property="fl301232Code"    column="fl301_232_code"    />
+        <result property="fl301232Tax"    column="fl301_232_tax"    />
+        <result property="centsPerKg"    column="cents_per_kg"    />
+        <result property="pga1"    column="pga1"    />
+        <result property="pga2"    column="pga2"    />
+        <result property="pga3"    column="pga3"    />
+        <result property="pga4"    column="pga4"    />
+        <result property="pga5"    column="pga5"    />
+        <result property="pga6"    column="pga6"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selecthsVo">
+        select id, cn_name, en_name, common_code, hs_code, anti_dumping, cpsc, need_cert, article_description, total_tax_rate, base_tax_rate, section301_code, section301_tax, fl301_232_code, fl301_232_tax, cents_per_kg, pga1, pga2, pga3, pga4, pga5, pga6, del_flag, create_by, create_time, update_by, update_time, remark from biz_hs
+    </sql>
+
+    <select id="selecthsList" parameterType="hs" resultMap="hsResult">
+        <include refid="selecthsVo"/>
+        <where>  
+            <if test="cnName != null  and cnName != ''"> and cn_name like concat('%', #{cnName}, '%')</if>
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selecthsById" parameterType="Long" resultMap="hsResult">
+        <include refid="selecthsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="inserths" parameterType="hs" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_hs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cnName != null">cn_name,</if>
+            <if test="enName != null">en_name,</if>
+            <if test="commonCode != null">common_code,</if>
+            <if test="hsCode != null">hs_code,</if>
+            <if test="antiDumping != null">anti_dumping,</if>
+            <if test="cpsc != null">cpsc,</if>
+            <if test="needCert != null">need_cert,</if>
+            <if test="articleDescription != null">article_description,</if>
+            <if test="totalTaxRate != null">total_tax_rate,</if>
+            <if test="baseTaxRate != null">base_tax_rate,</if>
+            <if test="section301Code != null">section301_code,</if>
+            <if test="section301Tax != null">section301_tax,</if>
+            <if test="fl301232Code != null">fl301_232_code,</if>
+            <if test="fl301232Tax != null">fl301_232_tax,</if>
+            <if test="centsPerKg != null">cents_per_kg,</if>
+            <if test="pga1 != null">pga1,</if>
+            <if test="pga2 != null">pga2,</if>
+            <if test="pga3 != null">pga3,</if>
+            <if test="pga4 != null">pga4,</if>
+            <if test="pga5 != null">pga5,</if>
+            <if test="pga6 != null">pga6,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cnName != null">#{cnName},</if>
+            <if test="enName != null">#{enName},</if>
+            <if test="commonCode != null">#{commonCode},</if>
+            <if test="hsCode != null">#{hsCode},</if>
+            <if test="antiDumping != null">#{antiDumping},</if>
+            <if test="cpsc != null">#{cpsc},</if>
+            <if test="needCert != null">#{needCert},</if>
+            <if test="articleDescription != null">#{articleDescription},</if>
+            <if test="totalTaxRate != null">#{totalTaxRate},</if>
+            <if test="baseTaxRate != null">#{baseTaxRate},</if>
+            <if test="section301Code != null">#{section301Code},</if>
+            <if test="section301Tax != null">#{section301Tax},</if>
+            <if test="fl301232Code != null">#{fl301232Code},</if>
+            <if test="fl301232Tax != null">#{fl301232Tax},</if>
+            <if test="centsPerKg != null">#{centsPerKg},</if>
+            <if test="pga1 != null">#{pga1},</if>
+            <if test="pga2 != null">#{pga2},</if>
+            <if test="pga3 != null">#{pga3},</if>
+            <if test="pga4 != null">#{pga4},</if>
+            <if test="pga5 != null">#{pga5},</if>
+            <if test="pga6 != null">#{pga6},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updatehs" parameterType="hs">
+        update biz_hs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cnName != null">cn_name = #{cnName},</if>
+            <if test="enName != null">en_name = #{enName},</if>
+            <if test="commonCode != null">common_code = #{commonCode},</if>
+            <if test="hsCode != null">hs_code = #{hsCode},</if>
+            <if test="antiDumping != null">anti_dumping = #{antiDumping},</if>
+            <if test="cpsc != null">cpsc = #{cpsc},</if>
+            <if test="needCert != null">need_cert = #{needCert},</if>
+            <if test="articleDescription != null">article_description = #{articleDescription},</if>
+            <if test="totalTaxRate != null">total_tax_rate = #{totalTaxRate},</if>
+            <if test="baseTaxRate != null">base_tax_rate = #{baseTaxRate},</if>
+            <if test="section301Code != null">section301_code = #{section301Code},</if>
+            <if test="section301Tax != null">section301_tax = #{section301Tax},</if>
+            <if test="fl301232Code != null">fl301_232_code = #{fl301232Code},</if>
+            <if test="fl301232Tax != null">fl301_232_tax = #{fl301232Tax},</if>
+            <if test="centsPerKg != null">cents_per_kg = #{centsPerKg},</if>
+            <if test="pga1 != null">pga1 = #{pga1},</if>
+            <if test="pga2 != null">pga2 = #{pga2},</if>
+            <if test="pga3 != null">pga3 = #{pga3},</if>
+            <if test="pga4 != null">pga4 = #{pga4},</if>
+            <if test="pga5 != null">pga5 = #{pga5},</if>
+            <if test="pga6 != null">pga6 = #{pga6},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletehsById" parameterType="Long">
+        delete from biz_hs where id = #{id}
+    </delete>
+
+    <delete id="deletehsByIds" parameterType="String">
+        delete from biz_hs where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

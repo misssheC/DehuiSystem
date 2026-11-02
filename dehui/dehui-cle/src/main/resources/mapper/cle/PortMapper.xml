@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dehui.cle.mapper.PortMapper">
+    
+    <resultMap type="Port" id="PortResult">
+        <result property="id"    column="id"    />
+        <result property="portName"    column="port_name"    />
+        <result property="portType"    column="port_type"    />
+        <result property="routeType"    column="route_type"    />
+        <result property="clearCustomsFlag"    column="clear_customs_flag"    />
+        <result property="loadPortCode"    column="load_port_code"    />
+        <result property="unloadPortCode"    column="unload_port_code"    />
+        <result property="createDept"    column="create_dept"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectPortVo">
+        select id, port_name, port_type, route_type, clear_customs_flag, load_port_code, unload_port_code, create_dept, create_by, create_time, update_by, update_time, del_flag from biz_port
+    </sql>
+
+    <select id="selectPortList" parameterType="Port" resultMap="PortResult">
+        <include refid="selectPortVo"/>
+        <where>  
+            <if test="portName != null  and portName != ''"> and port_name like concat('%', #{portName}, '%')</if>
+            <if test="portType != null  and portType != ''"> and port_type = #{portType}</if>
+            <if test="routeType != null  and routeType != ''"> and route_type = #{routeType}</if>
+            <if test="clearCustomsFlag != null  and clearCustomsFlag != ''"> and clear_customs_flag = #{clearCustomsFlag}</if>
+            <if test="loadPortCode != null  and loadPortCode != ''"> and load_port_code = #{loadPortCode}</if>
+            <if test="unloadPortCode != null  and unloadPortCode != ''"> and unload_port_code = #{unloadPortCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectPortById" parameterType="Long" resultMap="PortResult">
+        <include refid="selectPortVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPort" parameterType="Port" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_port
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="portName != null and portName != ''">port_name,</if>
+            <if test="portType != null and portType != ''">port_type,</if>
+            <if test="routeType != null and routeType != ''">route_type,</if>
+            <if test="clearCustomsFlag != null and clearCustomsFlag != ''">clear_customs_flag,</if>
+            <if test="loadPortCode != null">load_port_code,</if>
+            <if test="unloadPortCode != null">unload_port_code,</if>
+            <if test="createDept != null">create_dept,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="portName != null and portName != ''">#{portName},</if>
+            <if test="portType != null and portType != ''">#{portType},</if>
+            <if test="routeType != null and routeType != ''">#{routeType},</if>
+            <if test="clearCustomsFlag != null and clearCustomsFlag != ''">#{clearCustomsFlag},</if>
+            <if test="loadPortCode != null">#{loadPortCode},</if>
+            <if test="unloadPortCode != null">#{unloadPortCode},</if>
+            <if test="createDept != null">#{createDept},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePort" parameterType="Port">
+        update biz_port
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="portName != null and portName != ''">port_name = #{portName},</if>
+            <if test="portType != null and portType != ''">port_type = #{portType},</if>
+            <if test="routeType != null and routeType != ''">route_type = #{routeType},</if>
+            <if test="clearCustomsFlag != null and clearCustomsFlag != ''">clear_customs_flag = #{clearCustomsFlag},</if>
+            <if test="loadPortCode != null">load_port_code = #{loadPortCode},</if>
+            <if test="unloadPortCode != null">unload_port_code = #{unloadPortCode},</if>
+            <if test="createDept != null">create_dept = #{createDept},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePortById" parameterType="Long">
+        delete from biz_port where id = #{id}
+    </delete>
+
+    <delete id="deletePortByIds" parameterType="String">
+        delete from biz_port where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
