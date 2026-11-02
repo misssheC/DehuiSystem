@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dehui.cle.mapper.CusTaxRateMapper">
+    
+    <resultMap type="CusTaxRate" id="CusTaxRateResult">
+        <result property="id"    column="id"    />
+        <result property="caseNo"    column="case_no"    />
+        <result property="enDesc"    column="en_desc"    />
+        <result property="cnDesc"    column="cn_desc"    />
+        <result property="taxRate"    column="tax_rate"    />
+        <result property="issueDate"    column="issue_date"    />
+        <result property="hsCode"    column="hs_code"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCusTaxRateVo">
+        select id, case_no, en_desc, cn_desc, tax_rate, issue_date, hs_code, remark, del_flag, create_by, create_time, update_by, update_time from biz_tax_rate
+    </sql>
+
+    <select id="selectCusTaxRateList" parameterType="CusTaxRate" resultMap="CusTaxRateResult">
+        <include refid="selectCusTaxRateVo"/>
+        <where>  
+            <if test="cnDesc != null  and cnDesc != ''"> and cn_desc like concat('%', #{cnDesc}, '%')</if>
+            <if test="hsCode != null  and hsCode != ''"> and hs_code like concat('%', #{hsCode}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectCusTaxRateById" parameterType="Long" resultMap="CusTaxRateResult">
+        <include refid="selectCusTaxRateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCusTaxRate" parameterType="CusTaxRate" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_tax_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseNo != null">case_no,</if>
+            <if test="enDesc != null">en_desc,</if>
+            <if test="cnDesc != null">cn_desc,</if>
+            <if test="taxRate != null">tax_rate,</if>
+            <if test="issueDate != null">issue_date,</if>
+            <if test="hsCode != null">hs_code,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseNo != null">#{caseNo},</if>
+            <if test="enDesc != null">#{enDesc},</if>
+            <if test="cnDesc != null">#{cnDesc},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="issueDate != null">#{issueDate},</if>
+            <if test="hsCode != null">#{hsCode},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCusTaxRate" parameterType="CusTaxRate">
+        update biz_tax_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseNo != null">case_no = #{caseNo},</if>
+            <if test="enDesc != null">en_desc = #{enDesc},</if>
+            <if test="cnDesc != null">cn_desc = #{cnDesc},</if>
+            <if test="taxRate != null">tax_rate = #{taxRate},</if>
+            <if test="issueDate != null">issue_date = #{issueDate},</if>
+            <if test="hsCode != null">hs_code = #{hsCode},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCusTaxRateById" parameterType="Long">
+        delete from biz_tax_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteCusTaxRateByIds" parameterType="String">
+        delete from biz_tax_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

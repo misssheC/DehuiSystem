@@ -9,6 +9,14 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="中文描述" prop="cnDesc">
+        <el-input
+          v-model="queryParams.cnDesc"
+          placeholder="请输入中文描述"
+          clearable
+          @keyup.enter="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="创建日期" style="width: 308px">
         <el-date-picker
           v-model="daterangeCreateTime"
